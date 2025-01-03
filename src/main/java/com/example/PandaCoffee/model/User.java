@@ -24,7 +24,7 @@ public class User {
 
     @OneToOne
 //    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
-    private Images avatar;
+    public Images avatar;
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

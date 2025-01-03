@@ -16,5 +16,6 @@ public class ProductRequest {
     private double sizeM;
     private double sizeL;
     private Images avatar;
+//    private int status;  // 1: Còn hàng, 0: Hết hàng, -1: Bị xóa
     private int categoryId; // Thay vì đối tượng Categories, ta chỉ cần ID của category
 }

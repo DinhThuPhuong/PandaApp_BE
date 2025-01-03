@@ -21,7 +21,7 @@ public class Categories {
 
     @OneToOne
 //    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
-    private Images avatar ;
+    public Images avatar ;
 
 
 

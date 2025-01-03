@@ -24,14 +24,10 @@ public class Product {
     private double sizeM;
     private double sizeL;
 
-//    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
-@OneToOne
-    private Images avatar ;
-
-
-
-    //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-//    private List<Details> details;
+    @OneToOne
+    public Images avatar ;
     @ManyToOne
     private Categories categories;
+
+    private int status;  // 1: Còn hàng, 0: Hết hàng, -1: Bị xóa
 }
