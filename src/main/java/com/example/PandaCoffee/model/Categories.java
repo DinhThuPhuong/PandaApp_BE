@@ -1,13 +1,16 @@
 package com.example.PandaCoffee.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "categories")
 public class Categories {
     @Id
@@ -15,8 +18,12 @@ public class Categories {
     private int categoryId;
 
     private String categoryName;
+
     @OneToOne
-    private Image image;
+//    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
+    private Images avatar ;
+
+
 
     @OneToMany(mappedBy = "categories", cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JsonManagedReference // Chỉ định quan hệ một chiều từ User sang CV

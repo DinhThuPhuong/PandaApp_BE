@@ -14,14 +14,14 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface UserMapper {
 
 
-    @Mapping(target = "image", ignore = true)
+    @Mapping(target = "avatar", ignore = true)
     User toUser(UserRequest userRequest);
 
 
     UserResponse toUserResponse(User user);
 
 
-    @Mapping(target = "image", ignore = true)
+    @Mapping(target = "avatar", ignore = true)
     User updateUserFromRequest(UserRequest userRequest, @MappingTarget User user);
 
 

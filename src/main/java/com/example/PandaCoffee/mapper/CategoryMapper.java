@@ -11,15 +11,15 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface CategoryMapper {
 
 
-        @Mapping(target = "image", ignore = true)
-        Categories toCategories(CategoriesRequest CategoriesRequest);
+    @Mapping(target = "avatar", ignore = true)
+    Categories toCategories(CategoriesRequest CategoriesRequest);
 
 
-        CategoriesResponse toCategoriesResponse(Categories Categories);
+    CategoriesResponse toCategoriesResponse(Categories Categories);
 
 
-        @Mapping(target = "image", ignore = true)
-        void updateCategoriesFromRequest(CategoriesRequest CategoriesRequest, @MappingTarget Categories Categories);
+    @Mapping(target = "avatar", ignore = true)
+    void updateCategoriesFromRequest(CategoriesRequest CategoriesRequest, @MappingTarget Categories Categories);
 
 
 

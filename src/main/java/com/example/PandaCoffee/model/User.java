@@ -1,11 +1,15 @@
 package com.example.PandaCoffee.model;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
     @Id
@@ -17,8 +21,11 @@ public class User {
     private String password;
     private String phoneNumber;
     private boolean status;
+
     @OneToOne
-    private Image image;
+//    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
+    private Images avatar;
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Bill> bills;

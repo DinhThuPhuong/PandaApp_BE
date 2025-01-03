@@ -14,14 +14,14 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface ProductMapper {
 
 
-    @Mapping(target = "image", ignore = true)
+    @Mapping(target = "avatar", ignore = true)
     Product toProduct(ProductRequest productRequest);
 
 
     ProductResponse toProductResponse(Product Product);
 
 
-    @Mapping(target = "image", ignore = true)
+    @Mapping(target = "avatar", ignore = true)
     void updateProductFromRequest(ProductRequest ProductRequest, @MappingTarget Product Product);
 
 

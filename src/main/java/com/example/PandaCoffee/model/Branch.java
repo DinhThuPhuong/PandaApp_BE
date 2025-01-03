@@ -17,7 +17,9 @@ public class Branch {
     private String address;
     private String phoneNumber;
     @OneToOne
-    private Image image;
+//    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
+    private Images avatar;
+
 
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
     private List<Bill> bills;

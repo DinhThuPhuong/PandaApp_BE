@@ -13,7 +13,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface BillMapper {
 
 
-    @Mapping(target = "image", ignore = true)
+
     Bill toBill(BillRequest BillRequest);
 
 

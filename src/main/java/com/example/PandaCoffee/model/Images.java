@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Image {
+@Table(name = "images")
+public class Images {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +20,5 @@ public class Image {
     private String publicId;
     private String url;
     private String secureUrl;
-    @OneToOne
-    private Image image;
 
 }
