@@ -16,7 +16,8 @@ public class Branch {
     private String branchName;
     private String address;
     private String phoneNumber;
-    private String imageUrl;
+    @OneToOne
+    private Image image;
 
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
     private List<Bill> bills;

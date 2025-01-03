@@ -19,6 +19,8 @@ public class Product {
     private double sizeM;
     private double sizeL;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Details> details;
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+//    private List<Details> details;
+    @ManyToOne
+    private Categories categories;
 }

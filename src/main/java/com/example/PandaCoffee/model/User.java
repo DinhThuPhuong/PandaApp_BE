@@ -17,6 +17,8 @@ public class User {
     private String password;
     private String phoneNumber;
     private boolean status;
+    @OneToOne
+    private Image image;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Bill> bills;
