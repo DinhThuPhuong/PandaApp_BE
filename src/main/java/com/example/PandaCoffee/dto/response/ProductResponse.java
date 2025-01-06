@@ -18,5 +18,6 @@ public class ProductResponse {
     private double sizeM;
     private double sizeL;
     private Images avatar;
+    private int status;
     private String categoryName; // Thay vì trả về toàn bộ Categories, chỉ trả tên category
 }

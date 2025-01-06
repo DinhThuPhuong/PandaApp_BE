@@ -13,4 +13,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     //Truy van danh sach san pham thep categoryId
     List<Product> findByCategories_CategoryId(int categoryId);
+
+    //Truy van danh sach tat ca san pham theo ten san pham
+    List<Product> findByProductNameContainingIgnoreCase(String productName);
 }

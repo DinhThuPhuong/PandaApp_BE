@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProductRequest {
     private String productName;
     private String description;

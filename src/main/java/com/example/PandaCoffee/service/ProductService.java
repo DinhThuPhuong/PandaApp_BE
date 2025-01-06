@@ -4,6 +4,7 @@ import com.example.PandaCoffee.dto.response.ProductResponse;
 import com.example.PandaCoffee.mapper.ProductMapper;
 import com.example.PandaCoffee.model.Categories;
 import com.example.PandaCoffee.model.Product;
+import com.example.PandaCoffee.repositories.CategoriesRepository;
 import com.example.PandaCoffee.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ public class ProductService {
     private ProductRepository productRepository;
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    CategoriesRepository categoriesRepository;
 
     @Autowired
     private CloudinaryService cloudinaryService;
@@ -31,31 +34,73 @@ public class ProductService {
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
-    public ProductResponse addProduct (ProductRequest productRequest, MultipartFile file) throws Exception
-    {
+
+    public ProductResponse addProduct(ProductRequest productRequest, MultipartFile file) throws Exception {
         System.out.println(productRequest);
-        //Kiem tra ton tai
+        // Kiem tra ton tai
         Optional<Product> product = productRepository.findByProductName(productRequest.getProductName());
         if (product.isPresent()) {  // Kiểm tra nếu Optional có giá trị
             throw new IllegalArgumentException("Product exists");  // Ném ngoại lệ nếu sản phẩm đã tồn tại
         }
-        //Gan gia tri
+        // Gan gia tri
         Product pro = productMapper.toProduct(productRequest);
-        if(file != null && !file.isEmpty()){
+        if (file != null && !file.isEmpty()) {
             pro.setAvatar(cloudinaryService.uploadImage(file));
-
-        }else {
+        } else {
             pro.setAvatar(null);
         }
-        //Moi them san pham mac dinh con hang
+
+        //Set category
+        // Lấy Categories từ CSDL bằng categoryId
+        Categories category = categoriesRepository.findById(productRequest.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("Category not found for ID: " + productRequest.getCategoryId()));
+
+        // Gán categories cho Product
+        pro.setCategories(category);
+        // Moi them san pham mac dinh con hang
         pro.setStatus(1);
 
-        //Luu thong tin
-         productRepository.save(pro);
+        // Luu thong tin
+        productRepository.save(pro);
 
-         return productMapper.toProductResponse(pro);
+        return productMapper.toProductResponse(pro);
     }
-    // Cap nhat trang thai con hang
+
+    public ProductResponse updateProduct(int productId, ProductRequest productRequest, MultipartFile file) throws Exception {
+        // Tìm sản phẩm theo ID
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+        // Kiểm tra tên sản phẩm mới đã tồn tại chưa (trừ trường hợp tên không thay đổi)
+        Optional<Product> existingProduct = productRepository.findByProductName(productRequest.getProductName());
+        if (existingProduct.isPresent() && existingProduct.get().getProductId() != productId) {
+            throw new IllegalArgumentException("Product name already exists");
+        }
+
+        // Cập nhật các thông tin từ productRequest
+         productMapper.updateProductFromRequest(productRequest, product);
+
+        // Lấy Categories từ CSDL bằng categoryId
+        Categories category = categoriesRepository.findById(productRequest.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("Category not found for ID: " + productRequest.getCategoryId()));
+
+        // Gán categories cho Product
+        product.setCategories(category);
+
+
+
+        // Nếu có file ảnh mới, cập nhật avatar
+        if (file != null && !file.isEmpty()) {
+            product.setAvatar(cloudinaryService.uploadImage(file));
+        }
+
+        // Lưu lại sản phẩm sau khi cập nhật
+        productRepository.save(product);
+
+        // Trả về thông tin sản phẩm đã cập nhật dưới dạng ProductResponse
+        return productMapper.toProductResponse(product);
+    }
+
     public boolean updateProductStatusToInStock(int productId) {
         // Tìm sản phẩm theo ID
         Optional<Product> productOpt = productRepository.findById(productId);
@@ -80,30 +125,37 @@ public class ProductService {
         }
     }
 
-    //Truy van thong tin san pham theo id
-    public ProductResponse findById(int productId)
-    {
-        Product pro = productRepository.findById(productId).orElseThrow(()-> new IllegalArgumentException("Product not found"));
+    public ProductResponse findById(int productId) {
+        Product pro = productRepository.findById(productId).orElseThrow(() -> new IllegalArgumentException("Product not found"));
         return productMapper.toProductResponse(pro);
     }
 
-    //Truy van danh sach san pham theo ma loai
-    public List<ProductResponse> findAllProductByCategoryId(int categoryId)
-    {
+    public List<ProductResponse> findAllProductByCategoryId(int categoryId) {
         List<Product> list = productRepository.findByCategories_CategoryId(categoryId);
         return list.stream()
                 .map(productMapper::toProductResponse)
                 .collect(Collectors.toList());
     }
 
-    //Xoa mem san pham
-//     public boolean deledeProduct(int productId)
-//     {
-//         Product pro = productRepository.findById(productId).orElseThrow(()-> new IllegalArgumentException("Product not found"));
-//
-//     }
+    //Ham truy van danh sach tat ca san pham
+    public List<ProductResponse> findAll ()
+    {
+        var list = productRepository.findAll();
+        return list.stream()
+                .map(productMapper::toProductResponse)
+                .collect(Collectors.toList());
+    }
 
-    // Cập nhật trạng thái sản phẩm thành "hết hàng"
+    //Tim kiem danh sach san pham theo ten san pham
+    public List<ProductResponse> findByProductName(String productName) {
+        List<Product> products = productRepository.findByProductNameContainingIgnoreCase(productName);
+        return products.stream()
+                .map(productMapper::toProductResponse)
+                .collect(Collectors.toList());
+    }
+
+    //Truy van thong tin san pham theo id
+
     public boolean updateProductStatusToOutOfStock(int productId) {
         Optional<Product> productOpt = productRepository.findById(productId);
 
