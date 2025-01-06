@@ -24,4 +24,18 @@ public class UserService {
         var user = userMapper.toUser(userRequest);
         return userRepository.save(user);
     }
+
+    public User updateUser(int userId, UserRequest userRequest) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+        userMapper.updateUserFromRequest(userRequest, existingUser);
+        return userRepository.save(existingUser);
+    }
+
+    public void deleteUser(int userId) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+        userRepository.delete(existingUser);
+    }
 }
+

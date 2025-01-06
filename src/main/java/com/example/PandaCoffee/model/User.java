@@ -1,4 +1,5 @@
 package com.example.PandaCoffee.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,10 +24,9 @@ public class User {
     private boolean status;
 
     @OneToOne
-//    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
-    public Images avatar;
-
+    private Images avatar;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference // Quản lý vòng lặp với Bill
     private List<Bill> bills;
 }

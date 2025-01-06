@@ -13,10 +13,13 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface BillMapper {
 
 
-
+    @Mapping(target = "user.userId", source = "userId")
+    @Mapping(target = "branch.branchId", source = "branchId")
     Bill toBill(BillRequest BillRequest);
 
-
+    // Map Bill -> BillResponse (bỏ qua trường `user.bills` và `branch.bills` để tránh vòng lặp)
+    @Mapping(target = "user.bills", ignore = true)
+    @Mapping(target = "branch.bills", ignore = true)
     BillResponse toBillResponse(Bill Bill);
 
 
