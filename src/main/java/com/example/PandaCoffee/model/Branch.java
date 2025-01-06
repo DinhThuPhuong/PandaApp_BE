@@ -1,5 +1,6 @@
 package com.example.PandaCoffee.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,12 +17,12 @@ public class Branch {
     private String branchName;
     private String address;
     private String phoneNumber;
+
     @OneToOne
-//    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
     private Images avatar;
 
-
     @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL)
+    @JsonManagedReference // Quản lý vòng lặp với Bill
     private List<Bill> bills;
 }
 

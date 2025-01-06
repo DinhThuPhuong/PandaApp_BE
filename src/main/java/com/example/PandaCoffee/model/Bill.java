@@ -1,5 +1,6 @@
 package com.example.PandaCoffee.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -15,9 +16,11 @@ public class Bill {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    @JsonBackReference // Tránh vòng lặp với User
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "branch_id", referencedColumnName = "branchId")
+    @JsonBackReference // Tránh vòng lặp với Branch
     private Branch branch;
 }
