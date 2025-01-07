@@ -22,7 +22,7 @@ public interface UserMapper {
 
 
     @Mapping(target = "avatar", ignore = true)
-    User updateUserFromRequest(UserRequest userRequest, @MappingTarget User user);
+    void updateUserFromRequest(UserRequest userRequest, @MappingTarget User user);
 
 
 

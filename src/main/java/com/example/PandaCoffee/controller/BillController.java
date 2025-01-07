@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/bills")
 public class BillController {
 
     @Autowired
@@ -21,12 +21,19 @@ public class BillController {
     @Autowired
     private BillMapper billMapper;
 
-    @PostMapping("/bills")
+    @PostMapping("/add")
     public ResponseEntity<BillResponse> addBill(@RequestBody BillRequest billRequest) {
-        Bill bill = billMapper.toBill(billRequest);
-        Bill createdBill = billService.createBill(bill);
-        BillResponse response = billMapper.toBillResponse(createdBill);
+        // Xử lý việc tạo Bill và gắn danh sách Details vào Bill trong service
+        BillResponse response = billService.addBillWithDetails(billRequest);
+
+        // Trả về BillResponse với danh sách Details
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BillResponse> getById (@PathVariable int id)
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(billService.findById(id));
     }
 
     @PutMapping("/bills/{billId}")

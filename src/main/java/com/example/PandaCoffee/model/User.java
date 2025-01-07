@@ -23,8 +23,13 @@ public class User {
     private String phoneNumber;
     private boolean status;
 
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Images avatar;
+
+    private String verificationCode; // Mã xác thực
+
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference // Quản lý vòng lặp với Bill
